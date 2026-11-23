@@ -17093,8 +17093,8 @@ function PP({
 }) {
   const m = new Date(),
     k = di(m.getFullYear(), m.getMonth() + 1, m.getDate()),
-    [g, P] = y.useState(() => m.getFullYear()),
-    [S, E] = y.useState(() => m.getMonth() + 1),
+    [g, P] = y.useState(() => (m < new Date(2027, 9, 1) ? 2027 : m.getFullYear())),
+    [S, E] = y.useState(() => (m < new Date(2027, 9, 1) ? 10 : m.getMonth() + 1)),
     [_, v] = y.useState(""),
     [x, R] = y.useState("in");
   y.useEffect(() => {
