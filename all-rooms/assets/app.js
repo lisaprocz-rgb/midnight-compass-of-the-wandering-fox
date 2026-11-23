@@ -21432,6 +21432,26 @@ function L2(n) {
     day: "numeric",
   });
 }
+const XBATH = {
+  AKV: { studio: "1 bath", "1br": "Jambo 1 bath, Kidani 2 baths", "2br": "Jambo 2 baths, Kidani 3 baths", "3br": "4 baths" },
+  BLT: { studio: "1 bath", "1br": "2 baths", "2br": "3 baths", "3br": "4 baths" },
+  BCV: { studio: "1 bath", "1br": "1 bath", "2br": "2 baths" },
+  BWV: { studio: "1 bath", "1br": "1 bath", "2br": "2 baths", "3br": "3 baths" },
+  GFV: { resort_studio: "1 bath", deluxe_studio: "1 split bath", "1br": "1 bath", "2br": "2 baths", "3br": "4 baths" },
+  OKW: { studio: "1 bath", "1br": "1 bath", "2br": "2 baths", "3br": "4 baths" },
+  PVB: { deluxe_studio: "1 split bath", bungalow_2br: "2 baths", tower_duo: "1 bath", tower_studio: "1 bath", tower_1br: "2 baths", tower_2br: "3 baths", tower_penthouse: "3 baths*" },
+  SSR: { studio: "1 bath", "1br": "1 bath", "2br": "2 baths", "3br": "4 baths", treehouse: "2 baths*" },
+  RIV: { tower_studio: "1 bath", studio: "1 split bath", "1br": "1 bath", "2br": "2 baths", "3br": "3 baths" },
+  CCK: { studio: "1 bath", "1br": "1 bath", "2br": "2 baths", "3br": "3 baths", cabin: "2 baths*" },
+  AUL: { hotel: "1 bath", studio: "1 bath", "1br": "1 bath", "2br": "2 baths", "3br": "4 baths" },
+  GCAL: { studio: "1 bath", "1br": "2 baths", "2br": "3 baths", "3br": "4 baths" },
+  VDH: { duo_studio: "1 bath", studio: "1 bath", garden_duo: "1 bath", garden_studio: "1 bath", "1br": "2 baths", "2br": "3 baths", "3br": "4 baths" },
+  HH: { studio: "1 bath", "1br": "1 bath", "2br": "2 baths", "3br": "3 baths*" },
+  VB: { inn_gv: "1 bath", studio: "1 bath", "1br": "1 bath", "2br": "2 baths", "3br": "3 baths*" },
+};
+function xBath(resort, room) {
+  return XBATH[resort]?.[room] ?? "";
+}
 function I2() {
   const { toast: n } = Au(),
     r = _i(),
@@ -21792,7 +21812,9 @@ function I2() {
                                                   children: [
                                                     "(up to ",
                                                     I.maxGuests,
-                                                    " guests)",
+                                                    " guests",
+                                                    xBath(s, I.key) ? ` · ${xBath(s, I.key)}` : "",
+                                                    ")",
                                                   ],
                                                 }),
                                               ],
@@ -21952,6 +21974,7 @@ function I2() {
                                               children: [
                                                 `${I.view.label} View`,
                                                 first ? ` · up to ${I.room.maxGuests} guests` : "",
+                                                first && xBath(s, I.room.key) ? ` · ${xBath(s, I.room.key)}` : "",
                                               ],
                                             }),
                                           ],
@@ -21976,6 +21999,10 @@ function I2() {
                                   );
                                 }),
                               }),
+                            }),
+                            h.jsx("p", {
+                              className: "text-muted-foreground text-xs px-4 py-2.5 border-t border-border",
+                              children: "Full bathrooms per villa. \u201cSplit bath\u201d means one bathroom split into two areas, each with its own shower or tub." + (Xa.some((I) => xBath(s, I.room.key).endsWith("*")) ? " * Estimated; not confirmed by Disney." : ""),
                             }),
                           ],
                         }),
@@ -22016,6 +22043,7 @@ function I2() {
                                             x.views.find((I) => I.key === R)
                                               ? ` · ${x.views.find((I) => I.key === R).label} View`
                                               : "",
+                                            x && xBath(s, x.key) ? ` · ${xBath(s, x.key)}` : "",
                                           ],
                                         }),
                                       ],
